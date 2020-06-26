@@ -1,0 +1,50 @@
+html{ font-size:26.66667vw;}
+body{ font-size:0.16rem;}
+a{text-decoration: none;}
+img{display: block;}
+ul{list-style: none;}
+*{margin: 0; padding: 0px;}
+/* header */
+.header{  /*box-shadow: 0 0.03rem 0.5rem rgba(0, 0, 0, .5)*/ text-align: center; line-height: 0.5rem;  background-color: rgb(255, 1, 54);}
+.header ul{display: flex; position: relative; height: 0.5rem;}
+.header .active{border-bottom: 2px solid #000000;}
+.header ul li{height: 100%;}
+.header ul li:nth-of-type(1){margin-right: 0.2rem; margin-left: 0.1rem;}
+.header ul li:nth-of-type(2){margin-right: 0.2rem;}
+.header ul li:nth-of-type(3){position: absolute; right: 0.2rem; top: 0rem;}
+.header ul li input{border-radius: 0.1rem; outline: none;}
+
+/* 轮播 */
+.swiper-container {
+    width: 100%;
+    height: 2.5rem;
+   
+} 
+.swiper-container img{width: 100%;height: 100%;}
+/* classify  分类 */
+.classify{width: 100%;}
+.classify ul{display: flex; flex-wrap: wrap; text-align: center;}
+
+.classify ul img{width: 0.5rem;height: 0.5rem;border-radius: 50px;}
+.classify ul li{ width: 50px;  margin: 0.1rem 0.21rem;font-size: 0.12rem;}
+.classify ul li p{margin-top: 0.05rem;}
+.classify ul li div{border-radius: 50px;width: 100%; color: black;}
+
+/* load  */
+.load{height: 100vh; overflow-y: auto;width: 100%;  padding-bottom: 0.8rem;}
+.load ul{ margin-top: 0.15rem;width: 100%;}
+
+.load ul li{padding-bottom: 0.1rem; width: 1.5rem; display: block;float: left; margin: 0.1rem 0.18rem; position: relative;position: relative;}
+.load ul li p:nth-of-type(1){overflow: hidden;text-overflow:ellipsis;white-space: nowrap; font-size: 0.16rem;}
+.load ul li p:nth-of-type(2){font-size: 0.14rem;}
+.load ul li span:nth-of-type(1){font-size: 0.15rem;}
+.load ul li a{position: absolute; right: 0rem;font-size: 0.14rem; color: white; margin-right: 0.05rem; background-color: red; border-radius: 0.15rem; padding: 0 0.05rem;}
+.load img{width: 100%; height: 100%; object-fit: cover;}
+.load .master{position: absolute; left: 0rem; top: 0rem;background-color: rgba(0, 0, 0, .04);width: 100%; height: 100%;}
+
+/* footer 底部 */
+.footer{height: 0.5rem; background-color: white;position: fixed; bottom:0;width: 100%;}
+.footer ul{height: 100%; display: flex; justify-content: space-evenly;}
+.footer ul li{height: 100%; }
+.footer ul li .active{color: red;}
+.footer ul li span{height:100%; width: 0.5rem;font-size: 0.3rem;line-height: 0.5rem;display: block;text-align: center;color: rgb(203, 203, 203);}

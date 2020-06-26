@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+        <input type="text" name="" id="">
+        <input type="password" name="" id="">
+        <button>提交</button>
+    </form>
+    <script src="../src/js/jquery.min.js"></script>
+    <script>
+
+        $('form').submit(function(e){
+           e.preventDefault()
+          let cd = $('[type="text"]').val()
+          let dd = $('[ type="password"]').val()
+            console.log(cd,dd)
+        })
+    </script>
+</body>
+</html>

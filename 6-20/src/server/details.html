@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/details.css">
+    <link rel="stylesheet" href="../icon/font_76ciqgbteim/iconfont.css">
+</head>
+
+<body>
+    <div class="Main-body">
+        <!-- <div class="header">
+       <img src="../img/ceshi1.jpg" alt="">
+       
+   </div>
+       
+   
+   <div class="main">
+       <p><span>￥</span>55<span class="sp">价格 ￥198起</span></p>
+       <p>测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字</p>
+
+   </div>
+   <div class="footer">
+       <ul>
+           <li><span class="iconfont .icon-kefu span">&#xe60d;</span><br>
+             客服</li>
+           <li><span class="iconfont .icon-dianpu span">&#xe606;</span><br> 店铺</li>
+            <li><span class="iconfont  .icon-shoucang span">&#xe624;</span><br> 收藏</li>
+            <li><a href="">加入购物车</a></li>
+            <li><a href="">立即购买</a></li>
+       </ul>
+   </div>
+   <div class="message">
+      <ul>
+         <li class="active"><a href="JavaScript:;">商品详情</a></li>
+         <li><a href="JavaScript:;">商品参数信息</a></li>
+         <li><a href="JavaScript:;">相关商品</a></li>
+     </ul>
+   </div>
+   <div class="inDetail"></div> -->
+    </div>
+
+
+
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script>
+        let str = window.location.search
+        str = str.substr(1)
+        console.log(str)
+        $.ajax({
+            url: '/details',
+            type: 'get',
+            data: { str },
+            dataType: 'json',
+            success: function (res) {
+                //    console.log(res)
+                let strs = ''
+                res.forEach(function (item) {
+                    strs += `  <div class="header">
+       <img src="${item.goods_big_logo}" alt="">
+       <div></div>
+   </div>
+       
+   
+   <div class="main">
+       <p><span>￥</span>${item.goods_price}<span class="sp">价格 ￥${item.goods_id}起</span></p>
+       <p>${item.goods_name}</p>
+
+   </div>
+   <div class="footer">
+       <ul>
+           <li><span class="iconfont .icon-kefu span">&#xe60d;</span><br>
+             客服</li>
+           <li><span class="iconfont .icon-dianpu span">&#xe606;</span><br> 店铺</li>
+            <li><span class="iconfont  .icon-shoucang span">&#xe624;</span><br> 收藏</li>
+            <li><a href="JavaScript:;" name="shop">加入购物车</a></li>
+            <li><a href="JavaScript:;" name="buy">立即购买</a></li>
+       </ul>
+   </div>
+   <div class="message">
+      <ul>
+         <li class="active"><a href="JavaScript:;">商品详情</a></li>
+         <li><a href="JavaScript:;">商品参数信息</a></li>
+         <li><a href="JavaScript:;">相关商品</a></li>
+     </ul>
+   </div>
+   <div class="inDetail">${item.goods_introduce}</div>`
+                })
+                $('.Main-body').html(strs)
+                var reselt = res[0]
+
+                  
+
+             
+                $('.Main-body').on('click', '[name="shop"]', function () {
+                    let cook=getCookie(document.cookie)
+                    // console.log(cook)
+                    if(cook.login!=='1'){
+                        let con=window.confirm('您还未登录，是否登录')
+                        if(con==true){
+                            window.location.href='./login.html'
+                        }else{
+                            return
+                        }
+                    }else{
+                        window.location.href='./shop.html'
+                    }
+                    
+                    // console.log(localStorage.getItem('car'))
+                    if (localStorage.getItem('cat') == null) {
+                      
+                        var oArr = []
+                        reselt.num = 1
+                        reselt.buy = true
+                        oArr.push(reselt)
+                    //    console.log(reselt)
+
+                    } else {
+                        
+                        var oArr=JSON.parse(localStorage.getItem('cat'))
+                        let bool = true
+                        // console.log(oArr)
+
+                        oArr.forEach(function (item) {
+                            if (item.goods_id == reselt.goods_id) {
+                                item.num++
+                                bool = false
+                                console.log(item)
+                                
+                             
+                            }
+                        })
+                        // console.log(reselt)
+                        if (bool == true) {
+                            reselt.num = 1
+                            reselt.buy = true
+                            oArr.push(reselt)
+                        }
+                    
+
+                    }
+
+
+                       localStorage.setItem('cat',JSON.stringify(oArr))
+
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>

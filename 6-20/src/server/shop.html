@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/shop.css">
+    <link rel="stylesheet" href="../icon/font_8rfftevt8eu/iconfont.css">
+</head>
+<body>
+    <div class="header">
+        <span>购物车</span>
+        <span>管理</span>
+    </div>
+    <div class="main">
+        <ul>
+        <!-- <ul> -->
+            <!-- <li>
+                <input type="checkbox">
+        <div class="img"><img src="../img/ceshi1.jpg" alt=""></div>
+        
+        <div class="main-s">
+            <p>测试文章测试文章测试文章测试文章测试文章测试文章测试文章</p>
+            <p><span>享</span>退货运险费</p>
+            <p><span>￥</span>499</p>
+             <button>-</button><button>1</button><button>+</button><a href="">删除</a>
+
+        </div>
+            </li> -->
+<!--             
+        </ul> -->
+        <!-- <div class="close">
+            <input type="checkbox" class="check">
+              <div>
+                  <p>合计：<span>￥</span> <span>198</span></p><a href="">结算</a>
+              </div>
+           </div> -->
+        </ul>
+    </div>
+
+    <div class="footer">
+        <ul>
+            <li name="index"><span class="iconfont .icon-tubiao302 ">&#xe649;
+            </span></li>
+            <li><span class="iconfont .icon-shouye active" >&#xe61b;</span></li>
+            <li name="login"><span class="iconfont .icon-wode2 ">&#xe62f;</span></li>
+        </ul>
+    </div>
+
+    
+     <script src="../js/jquery.min.js"></script>
+     <script>
+      $('[name="index"]').click(function(){
+          window.location.href='./index.html'
+      })
+      $('[name="login"]').click(function(){
+          window.location.href='./user.html'
+      })
+
+
+
+        const cartArr=JSON.parse(localStorage.getItem('cat'))
+         
+         setArr(cartArr)
+        function setArr(oArr){
+        
+         let str=''
+         let NUM=0
+            oArr.forEach((item,key)=>{
+            str+=`
+             <li>
+                <input type="checkbox" ${item.buy===true? "checked='checked'": ''} name="check" click=${item.goods_id}>
+        <div class="img"><img src="${item.goods_small_logo}" alt=""></div>
+        
+        <div class="main-s">
+            <p>${item.goods_name}</p>
+            <p><span>享</span>退货运险费</p>
+            <p><span>￥</span>${item.goods_price}</p>
+             <button name="sub"  sub=${item.goods_id}>-</button><button >${item.num}</button><button name="add" add=${item.goods_id}>+</button><a href="JavaScript:;" name="del" goods=${item.goods_id}>删除</a>
+
+        </div>
+            </li>
+
+           
+         `
+           if(item.buy==true){
+            
+            NUM+=item.goods_price* item.num
+        }
+        })
+        
+        str+=`   <div class="close">
+            <input type="checkbox" class="check" name="clicks" ${NUM==0? '':'checked'}>
+              <div>
+                  <p>合计：<span>￥</span> <span>${NUM}</span></p><a href="JavaScript:;" name="up">结算</a>
+              </div>
+           </div>`;
+
+           $('.main ul').html(str)
+        }
+   
+        let Main=document.querySelector('.main ul')
+        Main.addEventListener('click',function(e){
+             if(e.target.getAttribute('name')=='del'){
+                let goods=e.target.getAttribute('goods')
+                // console.log(goods)
+                cartArr.forEach(function(item,key){
+                    if(item.goods_id==goods){
+                        cartArr.splice(key,1)
+                        
+                    }
+                })
+             }
+             
+            if(e.target.getAttribute('name')=='add'){
+                let add=e.target.getAttribute('add')
+                cartArr.forEach(function(item,key){
+                    if(item.goods_id==add){
+                        item.num++
+                        console.log(item.num)
+                        if(item.num > item.goods_number){
+                            window.alert('购买超出库存')
+                            item.num=item.goods_number
+                        }
+                    }
+                    
+                })
+            }
+            if(e.target.getAttribute('name')=='sub'){
+                let sub=e.target.getAttribute('sub')
+                
+                cartArr.forEach(function(item,key){
+                    if(item.goods_id==sub){
+                        item.num--
+                        if(item.num<1){
+                            item.num=1
+                        }
+                    }
+                })
+            }
+            if(e.target.getAttribute('name')=="check"){
+                let check=e.target.getAttribute('click')
+                // $('[name="check"]').removeAttr('checked')
+             
+              cartArr.forEach(function(item){
+                  if(item.goods_id==check){
+                      if(item.buy==true){
+                          item.buy=false
+                       
+                      }else{
+                          item.buy=true
+                      }
+                  }
+              })
+             
+            }
+            if(e.target.getAttribute('name')=="clicks"){
+                   cartArr.forEach(function(item){
+                       if(item.buy==true){
+                           item.buy=false
+                         
+                          console.log(1)
+                       }else{
+                           item.buy=true
+                       }
+                   })
+            }
+
+            localStorage.setItem('cat',JSON.stringify(cartArr))
+            setArr(cartArr)
+         if(e.target.getAttribute('name')=='up'){
+             let odd=0
+          
+            //  let objs=JSON.parse(localStorage.getItem('cat'))
+             cartArr.forEach(function(item){
+                 if(item.buy==true){
+                    odd++
+                    return 
+                 }
+                 
+             })
+             if(odd!==0){
+                 window.alert('结算成功')
+             }else{
+                 window.alert('请选择一种商品')
+             }
+             
+         }
+
+
+        })
+     </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>登陆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 
+<link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+<body>
+
+<!-- main -->
+<div class="main-w3layouts wrapper">
+	<div class="main-agileinfo">
+		<div class="agileits-top" style="text-align: center;"> 
+			
+				<input class="text" type="text" name="Username" placeholder="姓名" required="">
+				<input class="text" type="password" name="password" placeholder="密码" required="">
+				<div class="wthree-text"> 
+					<ul> 
+						<li>
+							<label class="anim">
+								<input type="checkbox" class="checkbox" >
+								<span> 记住 ?</span> 
+							</label> 
+						</li>
+						<li><a href="Javascript:;" name="forget">忘记密码 ?</a> </li>
+					</ul>
+					<div class="clear"> </div>
+				</div> 
+				<div class="Sub-loding">
+					<input type="submit" value="登录">
+					<div class="loader">
+						<div class="loader-top">
+							<ul>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
+							</ul>
+						</div>
+					</div>
+				</div>  
+				
+				
+			
+			<p style="cursor: pointer; display: inline;">创建一个账号? </p> 
+		</div>	 
+	</div>	
+
+	<ul class="w3lsg-bubbles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>	
+<!-- <a href="../index.html"></a> -->
+<!-- //main --> 
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/cookie.js"></script>
+<script>
+	
+	$('p').click(function(){
+		window.location.href='./register.html'
+	})
+	$('[name="forget"]').click(function(){
+		window.alert('请联系管理员！')
+	})
+	let bool=true;
+     
+	$('[type="submit"]').click(function(){
+       
+	let username=$('[name="Username"]').val()
+	let userpwd=$('[name="password"]').val()
+	
+	if(username==''){
+		window.alert('账号不能为空！')
+		return false
+	}
+	if(userpwd==''){
+		window.alert('密码不能为空！')
+		return false
+	}
+	if(bool!==true){
+			window.alert('正在登陆请勿重复点击！')
+			return false
+		}
+	// 	bool=false
+	// 	console.log(bool)
+	// 	console.log($('.loader'))
+	// $(window).ajaxStart(function(){
+	// 	$('.loader').css('display','block')
+	// 	$('[type="submit"]').val('')
+	// 	$('[type="submit"]').prop('checked',true)
+	// })
+	// $(window).ajaxStop(function(){
+	// 	$('.loader').css('display' , 'none')
+	// 	$('[type="submit"]').val('登陆')
+	// 	$('[type="submit"]').prop('checked',false)
+	
+	// })
+	$.ajax({
+		url:'/login',
+		type:'get',
+		data:{userName:username,userPwd:userpwd},
+		dataType:'json',
+		success:function(res){
+			if(res.length==0){
+				window.alert('登录失败')
+				return
+			}else{
+				
+				window.alert('登录成功')
+				setCookie('login','1',1*24*60*60)
+				localStorage.setItem('imgs',JSON.stringify(username))
+            window.location.href=`./user.html?${username}`
+			}
+            // if(res=='1'){
+			// 	let str=decodeURIComponent(window.location.search)
+			// 	str=str.substr(1)
+			// 	window.alert('登陆成功')
+			// 	setCookie('login','1',7*24*60*60)
+				
+			// 	bool=true
+			// 	if(str == ''){
+			// 		window.location.href="./index.html"
+					
+			// 	}else{
+			// 		window.location.href=str
+			// 	}
+				console.log(res)
+			// }else if(res=='0'){
+			// 	window.alert('您输出的账号密码不正确')
+			// 	bool=true
+			// }   
+		}
+	})
+	
+	})
+	
+</script>
+</body>
+</html>
+

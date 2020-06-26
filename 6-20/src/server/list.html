@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/list.css">
+    <link rel="stylesheet" href="../icon/font_8rfftevt8eu/iconfont.css">
+</head>
+<body>
+    <!-- header -->
+
+    <div class="header">
+        <span name="arrows"></span>
+        <span><input type="text" placeholder=" 固态" style="padding-left : 15px;" name="content"><span style="font-size: 14px; margin-left: 5px;" name="seek">搜索</span></span>
+     
+    </div> 
+    <div class="screen">筛选618狂欢节商品</div>
+   <!-- brand -->
+    <div class="brand">
+        <ul>
+            <li>品 牌</li>
+            <li>售后服务</li>
+            <li>保修期</li>
+            <li name="price">价位</li>
+        </ul>
+    </div> 
+    <div class="main">
+         <ul>
+             <!-- <li>
+                 <a href="">
+                    <div class="img"><img src="../img/ceshi1.jpg" alt=""></div>
+                    <div>
+                        <h2>测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字</h2>
+                        <p><span>￥</span>239</p>
+                        <span class="sp">退货运费险</span><span class="sp">0元下单</span><span class="sp">3期免息</span><span class="sp">公益</span>
+                          <p>月销100笔</p>
+                    </div>
+                 </a>
+             </li> -->
+          
+         </ul>
+    </div>
+     <!-- footer 底部 -->
+     <div class="footer">
+        <ul>
+            <li name="recommend"><span class="iconfont .icon-tubiao302 ">&#xe649;
+            </span></li>
+            <li name="shop"><span class="iconfont .icon-shouye" >&#xe61b;</span></li>
+            <li name="login"><span class="iconfont .icon-wode2 ">&#xe62f;</span></li>
+        </ul>
+    </div>
+    
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script>
+     $('[name="recommend"]').click(function(){
+         window.location.href='./index.html'
+     })
+     $('[name="shop"]').click(function(){
+         let cook=getCookie(document.cookie)
+         if(cook.login=='1'){
+             window.location.href='./shop.html'
+             
+         }else{
+             let con=window.confirm('您还未登录是否跳转登录页面登录')
+             if(con==true){
+                 window.location.href='./login.html'
+             }
+         }
+     })
+    $('[name="login"]').click(()=>{
+        let cook=getCookie(document.cookie)
+         if(cook.login=='1'){
+             window.location.href='./shop.html'
+             
+         }else{
+             let con=window.confirm('您还未登录是否跳转登录页面登录')
+             if(con==true){
+                 window.location.href='./login.html'
+             }
+         }
+    })
+
+        var dd=1
+        var line=18
+        ajax(dd,line)
+        var bool=false
+        function ajax(page){
+         if(bool==true){
+             return
+         }
+         bool=true
+            let str=decodeURIComponent(window.location.search)
+           str=str.substring(1)
+           str=str.split('=')
+           var dd=1
+        //    console.log(str)
+           $.ajax({
+               url:'/list',
+               type:'get',
+               data:{cat_one_id:str[0],cat_one:str[1],page:page,line:line},
+               dataType:'json',
+               success:function(res){
+                //    console.log(res)
+                   let strs=''
+                   res.forEach(function(item){
+                      strs+=` <li>
+                 <a href="./details.html?${item.goods_id}">
+                    <div class="img"><img src="${item.goods_big_logo}" alt=""><div></div></div>
+                    <div>
+                        <h2>${item.goods_name}</h2>
+                        <p><span>￥</span>${item.goods_price}</p>
+                        <span class="sp" style="border: 1px solid rgb(75,119,248); color: rgb(75,119,248)">退货运费险</span><span class="sp">0元下单</span><span class="sp">3期免息</span><span class="sp">公益</span>
+                          <p style=" color: rgb(153,153,153)">月销${item.goods_number}笔</p>
+                    </div>
+                 </a>
+             </li>`
+                   })
+                   $('.main ul').html(strs)
+                   bool=false
+               }
+               
+           })
+        
+        }
+        //滚动条的监听
+        window.onscroll=function(){
+            let oH=parseInt(document.documentElement.scrollTop)   //滚动条高度
+            let oHeight=parseInt(document.documentElement.clientHeight)  //视窗窗口
+            let oUl=parseInt($('.main ul').css('height'))
+            // console.log(oH,oHeight,oUl)       
+            if(oH + oHeight > oUl-200){
+                if(bool==true){
+                  return
+                }
+                line+=8
+                ajax(dd,line)
+                bool=true
+               
+            }
+            
+        }
+  $('[name="seek"]').click(()=>{
+    seet()
+    window.onscroll=function(){
+            let oH=parseInt(document.documentElement.scrollTop)   //滚动条高度
+            let oHeight=parseInt(document.documentElement.clientHeight)  //视窗窗口
+            let oUl=parseInt($('.main ul').css('height'))
+            // console.log(oH,oHeight,oUl)
+            if(oH + oHeight > oUl-200){
+                if(bool==true){
+                  return
+                }
+                line+=8
+                seet()
+                bool=true
+               
+            }
+            
+        }
+  })
+
+//   返回上级
+        $('[name="arrows"]').click(()=>{
+            window.history.back(-1)
+        })
+
+
+
+//   搜索
+        function seet(){
+            let val=$('[name="content"]').val()
+   
+  
+      $.ajax({
+          url:'/seek',
+          type:'get',
+          data:{val},
+          dataType:'json',
+          success:function(res){
+            if(res.length==0){
+                $('.main').html('<p style="text-align: center; margin-top:20px; color: red;">亲！没有找到相关物品</p>')
+                // console.log(11)
+            }
+
+
+              console.log(res)
+            let strs=''
+                   res.forEach(function(item){
+                      strs+=` <li>
+                 <a href="./details.html?${item.goods_id}">
+                    <div class="img"><img src="${item.goods_big_logo}" alt=""><div></div></div>
+                    <div>
+                        <h2>${item.goods_name}</h2>
+                        <p><span>￥</span>${item.goods_price}</p>
+                        <span class="sp" style="border: 1px solid rgb(75,119,248); color: rgb(75,119,248)">退货运费险</span><span class="sp">0元下单</span><span class="sp">3期免息</span><span class="sp">公益</span>
+                          <p style=" color: rgb(153,153,153)">月销${item.goods_number}笔</p>
+                    </div>
+                 </a>
+             </li>`
+                   })
+                   $('.main ul').html(strs)
+          }
+      })
+        }
+
+   //排序
+    $('[name="price"]').click(()=>{
+        console.log(1)
+        
+    })
+    
+    </script>
+</body>
+</html>

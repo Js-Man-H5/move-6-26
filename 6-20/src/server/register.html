@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+<title>注册</title>
+<link rel="stylesheet" href="../css/frozenui.css">
+<link rel="stylesheet" href="../css/login.css">
+<link rel="stylesheet" href="../css/base.css" />
+<style>
+	button{
+		padding:8px 0px 8px 0px;
+		margin-bottom: 10px;
+		border-radius: 20px;
+		width: 230px;
+    color: white;
+    background-color: #ffa83e;
+    font-size: 14px;
+	}
+	input[type="file"]{margin-left: 32px;    display: block; margin-bottom: 10px;}
+</style>
+</head>
+<body>
+
+<div class="c-title">
+	<div class="logo">
+		<img src="../img/login-alipay.png" width="42" height="32" alt="">
+	</div>
+	<p class="name">欢迎注册-品如的店</p>
+</div>
+
+<div class="c-login">
+	<h1>注册</h1>
+	<form class="loginForm" enctype="multipart/form-data" action="" >
+		<input type="text" class="userLogo" placeholder="请输入合理账号" lay-verify="required|userName" name="username"/>
+		<input type="text"  placeholder="请输入手机号码" lay-verify="phone" />
+		<input type="text" class="codeText" placeholder="请输入验证密码" lay-verify="required" name="ver1"/>
+		<!-- <input type="button" class="codeBtn" value="" name="ver" /> -->
+		<p name="ver" style="width: 75px; background-color: #ffa83e; display:inline-block;border-radius: 5px;letter-spacing:2px;color: white;"></p>
+		<input type="text" class="userLogo" placeholder="请输入邮箱" lay-verify="email" />
+		<input type="password" placeholder="请输入密码" lay-verify="required" name="userpwd"/>
+		<input type="password" placeholder="请输入确认密码" lay-verify="required" name="userpwd1"/>
+		<input type="file" name="pic">
+		<!-- <input type="button" value="注册"/> -->
+		<button id="regBtn">注册</button>
+	</form>
+</div>
+
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/base.js"></script>
+<script type="text/javascript">
+function verify(){
+	let str=''
+	for(let i=1;i<=6;i++){
+		let dd='qwertyuioplkjhgfdsazxcvbnmMNBVCXZASDFGHJKLPOIUYTREWQ1234567890'
+		
+		let random=parseInt(Math.random()*dd.length)
+		if(str.indexOf(dd[random])===-1){
+			str+=dd[random]
+		}else{
+			i--
+		}
+	}
+	
+	return str
+}
+   $('[name="ver"]').html(verify())
+  
+$('[name="ver"]').click(function(){
+	$('[name="ver"]').html(verify())
+})
+
+
+
+
+
+
+$('form').submit(function(e){
+	e.preventDefault()
+	let username=$('[name="username"]').val()
+	let userpwd=$('[name="userpwd"]').val()
+	let userpwd1=$('[name="userpwd1"]').val()
+	let ver1=$('[name="ver1"]').val()
+
+	  console.log(ver1)
+	  
+	if(!checkInputFunction($('#regBtn'))){
+	
+		return false;
+	}
+	if($('[name="pic"]').val().length==0){
+		window.alert('请上传头像')
+		return false
+	}
+	
+	if(ver1.toLowerCase() !== $('[name="ver"]').html().toLowerCase()){
+		window.alert('验证码有误')
+			 return false
+	}
+	if($('[name="userpwd"]').val() !== $('[name="userpwd1"]').val()){
+			 window.alert('两次密码不同')
+			 return false
+	}
+   if($('[name="userpwd"]').val().length < 8 ||$('[name="userpwd"]').val().length >16){
+				window.alert('密码长度必须大于8小于16')
+				return false
+   }
+	//下面书写验证成功后执行的内容
+	 let formData= new FormData(document.querySelector('form'))
+	$.ajax({
+		url:'/data_res',
+		data:formData,
+		dataType:'json',
+		type:'post',
+		contentType:false,
+		processData:false,
+		success:function(res){
+			console.log(res)
+			if(res.res=='1'){
+				window.alert('账号注册成功')
+				window.location.href='./login.html'
+			}else if(res.res=='0'){
+				window.alert('账号注册失败，该账号可能被注册')
+			}
+		}
+	})
+	
+	
+	
+
+
+
+
+
+
+	
+})
+     
+</script>
+</body>
+</html>
+

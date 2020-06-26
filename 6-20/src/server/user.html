@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/user.css">
+    <link rel="stylesheet" href="../icon/font_8rfftevt8eu/iconfont.css">
+</head>
+<body>
+    
+    <div class="header">
+           <p>个人用户</p>
+    </div>
+   
+<div class="main">
+    <div class="img" name="img" style="background-color: rgb(201, 175, 226);"><img src="" alt="" id="srcImg"></div>
+   
+    <div class="txt">
+        <span>您好！</span><span name="name">XX</span><span>先生</span>
+    </div>
+    
+</div>
+<div class="text">
+    <p>勤劳一日，可得一夜长眠。</p>
+    <p>勤劳一生，可得幸福长眠。</p>
+</div>
+<!-- login -->
+    <div class="login">
+             <button>已登录</button>
+    </div>
+
+    <!-- footer  -->
+    <div class="footer">
+        <ul>
+            <li name="index"><span class="iconfont .icon-tubiao302 ">&#xe649;
+            </span></li>
+            <li name="shop"><span class="iconfont .icon-shouye " >&#xe61b;</span></li>
+            <li><span class="iconfont .icon-wode2 active">&#xe62f;</span></li>
+        </ul>
+    </div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/cookie.js"></script>
+<script>
+    var cook=getCookie(document.cookie);
+ 
+    //   console.log(username);
+      
+     
+    
+    //  ( function (){
+        // console.log(1212);
+          
+    // let str=decodeURIComponent(window.location.search)
+    //   let username=str.substr(1)
+    let localImg=JSON.parse(localStorage.getItem('imgs'))
+    let username=localImg
+        $.ajax({
+         url:'/name',
+         data:{username},
+         dataType:'json',
+         type:'get',
+         success:function(res){
+       
+        // localStorage.setItem('img',JSON.stringify(res))
+            console.log(res)
+             $('[name="name"]').text(res[0].username)
+             let strs=''
+            //  console.log(res)  
+            res.forEach(function(item){
+                
+                strs=`<img src="../img/${item.pic}" alt="">`
+            })
+            $('[name="img"]').html(strs)
+         }
+     })
+    //  })()
+
+
+
+
+
+$('[name="index"]').click(function(){
+    window.location.href='./index.html'
+})
+$('[name="shop"]').click(function(){
+   if(cook.login=='1'){
+       window.location.href='./shop.html'
+   }else{
+    let   conf = window.confirm('您还未登录！是否跳转登录页面')
+    if(conf==true){
+        window.location.href='./login.html'
+    }
+   }
+
+})
+    
+//    console.log(cook.login)
+    if(cook.login=='1'){
+        $('button').html('已登录')
+    }else{
+        $('button').html('未登录')
+        //  return false
+    }
+  if(cook.login!=='1'){
+    $('button').html('未登录')
+  }
+  
+
+    $('.login button').click(function(){
+        if(cook.login!=='1'){
+        let con=window.confirm('您还未登录，是否跳转登录页面')
+        if(con==true){
+            window.location.href='./login.html'
+        }
+        }else{
+        //    console.log(cook.login)
+        
+           let cons=window.confirm('您已登录是否退出登录！')
+             if(cons==true){
+                let local= JSON.parse  (localStorage.getItem('cat')) 
+                console.log(local)
+                setCookie('login','1',-1)
+            
+           
+              $.ajax({
+                  url:'/local',
+                  type:'get',
+                  data:{local},
+                  dataType:'json',
+                  success:function(res){
+                      console.log(res)
+                  }
+              })
+               
+                window.location.reload() 
+              
+                $('button').html('未登录')
+                // $('#srcImg').attr('src','../img/chesi2.jpg')
+               
+                
+             }
+           
+        
+        }
+    })
+
+  
+
+
+
+
+    
+
+    
+    
+   
+</script>
+</body>
+</html>
